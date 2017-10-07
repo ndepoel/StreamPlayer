@@ -11,7 +11,7 @@ namespace StreamPlayer
     {
         private List<LiveStream> _liveStreams = new List<LiveStream>();
 
-        private Stack<uint> _freeScreenCorners = new Stack<uint>();
+        private Stack<uint> _freeScreenSlots = new Stack<uint>();
 
         private volatile bool _isActive = false;
 
@@ -23,9 +23,9 @@ namespace StreamPlayer
 
         public LiveStreamController()
         {
-            foreach (int corner in Enumerable.Range(0, 4))
+            foreach (int slot in Enumerable.Range(0, 4))
             {
-                _freeScreenCorners.Push((uint)(3 - corner));
+                _freeScreenSlots.Push((uint)(3 - slot));
             }
         }
 
@@ -97,7 +97,7 @@ namespace StreamPlayer
             {
                 liveStream = new LiveStream(application.Name, streamData.Name, streamData.Time);
                 liveStream.Closed += LiveStream_OnClosed;
-                liveStream.Start(AssignScreenCorner());
+                liveStream.Start(AssignScreenSlot());
                 _liveStreams.Add(liveStream);
                 StreamsChanged?.Invoke();
                 return;
@@ -109,7 +109,7 @@ namespace StreamPlayer
                 Console.WriteLine("Detected restart of live stream '{0}'", liveStream.FullName);
                 liveStream.Close();
                 liveStream.SetTime(streamData.Time);
-                liveStream.Start(AssignScreenCorner());
+                liveStream.Start(AssignScreenSlot());
                 _liveStreams.Add(liveStream);
                 StreamsChanged?.Invoke();
             }
@@ -119,7 +119,7 @@ namespace StreamPlayer
         {
             Console.WriteLine("Live stream '{0}' was closed", liveStream.FullName);
             _liveStreams.Remove(liveStream);
-            FreeScreenCorner(liveStream.ScreenCorner);
+            FreeScreenSlot(liveStream.ScreenSlot);
             StreamsChanged?.Invoke();
         }
 
@@ -146,18 +146,18 @@ namespace StreamPlayer
             return _liveStreams.FirstOrDefault(ls => ls.AppName == appName && ls.StreamName == streamName);
         }
 
-        private uint AssignScreenCorner()
+        private uint AssignScreenSlot()
         {
-            if (_freeScreenCorners.Count == 0)
+            if (_freeScreenSlots.Count == 0)
                 return 0;
 
-            return _freeScreenCorners.Pop();
+            return _freeScreenSlots.Pop();
         }
 
-        private void FreeScreenCorner(uint corner)
+        private void FreeScreenSlot(uint slot)
         {
-            if (!_freeScreenCorners.Contains(corner))
-                _freeScreenCorners.Push(corner);
+            if (!_freeScreenSlots.Contains(slot))
+                _freeScreenSlots.Push(slot);
         }
     }
 }

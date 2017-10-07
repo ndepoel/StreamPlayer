@@ -15,7 +15,7 @@ namespace StreamPlayer
 
         public string StreamName { get; private set; }
 
-        public uint ScreenCorner { get; private set; }
+        public uint ScreenSlot { get; private set; }
 
         public string FullName => string.Format("{0}/{1}", AppName, StreamName);
 
@@ -39,9 +39,9 @@ namespace StreamPlayer
             _startTime = DateTime.UtcNow.Subtract(TimeSpan.FromMilliseconds(time));
         }
 
-        public void Start(uint corner)
+        public void Start(uint screenSlot)
         {
-            ScreenCorner = corner;
+            ScreenSlot = screenSlot;
 
             InitStreamProcess();
             PositionWindow();
@@ -135,14 +135,28 @@ namespace StreamPlayer
             
             var targetScreen = Screen.AllScreens.FirstOrDefault(s => s != Screen.PrimaryScreen) ?? Screen.PrimaryScreen;
             var workingArea = targetScreen.WorkingArea;
+            float aspect = (float)workingArea.Width / workingArea.Height;
 
-            int halfWidth = workingArea.Width / 2;
-            int halfHeight = workingArea.Height / 2;
-            uint cornerBits = ScreenCorner % 4;
-            int x = ((cornerBits & 0x01) == 0) ? workingArea.Left : workingArea.Right - halfWidth;
-            int y = ((cornerBits & 0x02) == 0) ? workingArea.Top : workingArea.Bottom - halfHeight;
+            if (aspect >= 1)
+            {
+                // Horizontally orientated screen (2x2 pattern)
+                int halfWidth = workingArea.Width / 2;
+                int halfHeight = workingArea.Height / 2;
+                uint slotBits = ScreenSlot % 4;
+                int x = ((slotBits & 0x01) == 0) ? workingArea.Left : workingArea.Right - halfWidth;
+                int y = ((slotBits & 0x02) == 0) ? workingArea.Top : workingArea.Bottom - halfHeight;
 
-            MoveWindow(_process.MainWindowHandle, x, y, halfWidth, halfHeight, true);
+                MoveWindow(_process.MainWindowHandle, x, y, halfWidth, halfHeight, true);
+            }
+            else
+            {
+                // Vertically orientated screen (4 screens stacked)
+                int quarterHeight = workingArea.Height / 4;
+                int x = workingArea.Left;
+                int y = workingArea.Top + quarterHeight * (int)ScreenSlot;
+
+                MoveWindow(_process.MainWindowHandle, x, y, workingArea.Width, quarterHeight, true);
+            }
         }
     }
 }
