@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -139,15 +140,29 @@ namespace StreamPlayer
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        };
+
         private async void PositionWindow()
         {
+            // Wait until the player window becomes ready
             while (_process != null && _process.MainWindowHandle == IntPtr.Zero)
             {
                 await Task.Delay(1000);
             }
 
+            // Move the window to its intended position on the target screen
             MoveWindowToTargetScreen();
 
+            // Keep checking that the window is positioned on the target screen
             while (_process != null && !_process.HasExited)
             {
                 CheckWindowPosition();
@@ -157,7 +172,19 @@ namespace StreamPlayer
 
         private void CheckWindowPosition()
         {
-            // TODO: If window is not on correct screen, call MoveWindowToTargetScreen()
+            if (_process == null || _process.HasExited || _process.MainWindowHandle == IntPtr.Zero)
+                return;
+            
+            RECT rect;
+            if (!GetWindowRect(_process.MainWindowHandle, out rect))
+                return;
+
+            // If the window is not on the correct screen, move it to the target screen
+            var windowRect = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+            if (!windowRect.IntersectsWith(TargetScreen.WorkingArea))
+            {
+                MoveWindowToTargetScreen();
+            }
         }
 
         private void MoveWindowToTargetScreen()
