@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using StreamPlayer.Properties;
+using System.IO;
 
 namespace StreamPlayer
 {
@@ -27,8 +29,10 @@ namespace StreamPlayer
             {
                 _freeScreenSlots.Push((uint)(3 - slot));
             }
-        }
 
+            UnpackResources();
+        }
+        
         public async void StartLiveStreams()
         {
             _isActive = true;
@@ -52,6 +56,17 @@ namespace StreamPlayer
             }
 
             _liveStreams.Clear();
+        }
+
+        private void UnpackResources()
+        {
+            string ffplayPath = Path.Combine(Path.GetTempPath(), "ffplay.exe");
+            File.WriteAllBytes(ffplayPath, Resources.ffplay);
+            StreamConfig.Instance.FFPlay = ffplayPath;
+
+            string fontPath = Path.Combine(Path.GetTempPath(), "FreeSerif.ttf");
+            File.WriteAllBytes(fontPath, Resources.FreeSerif);
+            StreamConfig.Instance.FontFile = fontPath;
         }
 
         private async void UpdateLiveStreams()

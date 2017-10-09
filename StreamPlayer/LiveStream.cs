@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -22,6 +23,8 @@ namespace StreamPlayer
         public string StreamUrl => string.Format("{0}/{1}/{2}", StreamConfig.Instance.StreamBaseUrl, AppName, StreamName);
 
         public event Action<LiveStream> Closed;
+
+        private Screen TargetScreen => Screen.AllScreens.FirstOrDefault(s => s != Screen.PrimaryScreen) ?? Screen.PrimaryScreen;
 
         private Process _process;
 
@@ -83,9 +86,9 @@ namespace StreamPlayer
             // Disable window border to use more screen real estate
             if (StreamConfig.Instance.UseBorderless)
                 args.Add("-noborder");
-
+            
             // Add text overlay containing the stream's name
-            args.AddRange(new[] { "-vf", "drawtext=\"fontfile=FreeSerif.ttf: text='" + StreamName + "': fontcolor=white: fontsize=96: box=1: boxcolor=black@0.5: boxborderw=5: x=5: y=(h-text_h-5)\"" });
+            args.AddRange(new[] { "-vf", CreateTextOverlayFilter() });
 
             Console.WriteLine("Starting stream for URL: " + StreamUrl);
 
@@ -97,6 +100,8 @@ namespace StreamPlayer
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
             };
+
+            Console.WriteLine("Running: \"{0}\" {1}", psi.FileName, psi.Arguments);
 
             var process = new Process
             {
@@ -112,6 +117,19 @@ namespace StreamPlayer
             }
         }
 
+        private string CreateTextOverlayFilter()
+        {
+            var sb = new StringBuilder("scale=1920:1080,drawtext=\"");
+            sb.AppendFormat("fontfile='{0}':", StreamConfig.Instance.FontFile.Replace("\\", "\\\\").Replace(":", "\\:"));
+            sb.AppendFormat("text='{0}':", StreamName);
+            sb.Append("fontcolor=white:");
+            sb.Append("fontsize=96:");
+            sb.Append("box=1:boxcolor=black@0.5:boxborderw=5:");
+            sb.Append("x=5:y=(h-text_h-5)");
+            sb.Append("\"");
+            return sb.ToString();
+        }
+
         private void Process_Exited(object sender, EventArgs e)
         {
             // TODO: maybe if the user manually closes the ffplay window, they want it to stay closed. Now it will just be reopened automatically.
@@ -120,21 +138,34 @@ namespace StreamPlayer
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-        
-        public async void PositionWindow()
-        {
-            if (_process == null)
-                return;
 
-            while (_process.MainWindowHandle == IntPtr.Zero)
+        private async void PositionWindow()
+        {
+            while (_process != null && _process.MainWindowHandle == IntPtr.Zero)
             {
                 await Task.Delay(1000);
-                if (_process == null)
-                    return;
             }
-            
-            var targetScreen = Screen.AllScreens.FirstOrDefault(s => s != Screen.PrimaryScreen) ?? Screen.PrimaryScreen;
-            var workingArea = targetScreen.WorkingArea;
+
+            MoveWindowToTargetScreen();
+
+            while (_process != null && !_process.HasExited)
+            {
+                CheckWindowPosition();
+                await Task.Delay(1000);
+            }
+        }
+
+        private void CheckWindowPosition()
+        {
+            // TODO: If window is not on correct screen, call MoveWindowToTargetScreen()
+        }
+
+        private void MoveWindowToTargetScreen()
+        {
+            if (_process == null || _process.HasExited || _process.MainWindowHandle == IntPtr.Zero)
+                return;
+
+            var workingArea = TargetScreen.WorkingArea;
             float aspect = (float)workingArea.Width / workingArea.Height;
 
             if (aspect >= 1)

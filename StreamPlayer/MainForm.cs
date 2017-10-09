@@ -33,11 +33,14 @@ namespace StreamPlayer
 
         private void OnStreamsChanged()
         {
-            lstStreams.Items.Clear();
-            foreach (var streamName in _liveStreamController.ActiveStreams)
+            Invoke((MethodInvoker)delegate
             {
-                lstStreams.Items.Add(streamName);
-            }
+                lstStreams.Items.Clear();
+                foreach (var streamName in _liveStreamController.ActiveStreams)
+                {
+                    lstStreams.Items.Add(streamName);
+                }
+            });
         }
 
         private void btnOpenStreams_Click(object sender, EventArgs e)

@@ -59,5 +59,25 @@ namespace StreamPlayer.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ffplay {
+            get {
+                object obj = ResourceManager.GetObject("ffplay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] FreeSerif {
+            get {
+                object obj = ResourceManager.GetObject("FreeSerif", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
