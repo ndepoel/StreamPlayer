@@ -138,7 +138,7 @@ namespace StreamPlayer
             StreamsChanged?.Invoke();
         }
 
-        private async Task<ServerStats> RequestServerStats()
+        public async Task<ServerStats> RequestServerStats()
         {
             try
             {
