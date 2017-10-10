@@ -19,7 +19,37 @@ namespace StreamPlayer
 
         public string StatUrl { get; set; } = "http://foo.bar.com:8080/stat";
 
-        public string StreamBaseUrl { get; set; } = "rtmp://foo.bar.com";
+        /// <summary>
+        /// Kept for backward compatibility with configs made by version 1.1.
+        /// Existing StreamBaseUrl values are automatically migrated to StreamServer.
+        /// </summary>
+        public string StreamBaseUrl
+        {
+            get
+            {
+                return "rtmp://" + StreamServer;
+            }
+            set
+            {
+                Uri uri;
+                if (Uri.TryCreate(value, UriKind.Absolute, out uri))
+                {
+                    if (uri.Scheme == "rtmp")
+                    {
+                        StreamServer = uri.Host;
+                    }
+                }
+            }
+        }
+
+        // Read StreamBaseUrl from config when present, but don't write it back again.
+        // This allows existing StreamBaseUrl values to be migrated to StreamServer.
+        public bool ShouldSerializeStreamBaseUrl()
+        {
+            return false;
+        }
+
+        public string StreamServer { get; set; } = "foo.bar.com";
 
         public string MyStream { get; set; } = "";
 

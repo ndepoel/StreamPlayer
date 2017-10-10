@@ -31,8 +31,8 @@
             this.btnOpenStreams = new System.Windows.Forms.Button();
             this.lblStatUrl = new System.Windows.Forms.Label();
             this.txtStatsURL = new System.Windows.Forms.TextBox();
-            this.txtBaseUrl = new System.Windows.Forms.TextBox();
-            this.lblBaseUrl = new System.Windows.Forms.Label();
+            this.txtStreamServer = new System.Windows.Forms.TextBox();
+            this.lblStreamServer = new System.Windows.Forms.Label();
             this.txtMyStream = new System.Windows.Forms.TextBox();
             this.lblMyStream = new System.Windows.Forms.Label();
             this.lblStreams = new System.Windows.Forms.Label();
@@ -68,22 +68,22 @@
             this.txtStatsURL.TabIndex = 2;
             this.txtStatsURL.TextChanged += new System.EventHandler(this.txtStatsURL_TextChanged);
             // 
-            // txtBaseUrl
+            // txtStreamServer
             // 
-            this.txtBaseUrl.Location = new System.Drawing.Point(107, 35);
-            this.txtBaseUrl.Name = "txtBaseUrl";
-            this.txtBaseUrl.Size = new System.Drawing.Size(353, 20);
-            this.txtBaseUrl.TabIndex = 4;
-            this.txtBaseUrl.TextChanged += new System.EventHandler(this.txtBaseUrl_TextChanged);
+            this.txtStreamServer.Location = new System.Drawing.Point(107, 35);
+            this.txtStreamServer.Name = "txtStreamServer";
+            this.txtStreamServer.Size = new System.Drawing.Size(353, 20);
+            this.txtStreamServer.TabIndex = 4;
+            this.txtStreamServer.TextChanged += new System.EventHandler(this.txtStreamServer_TextChanged);
             // 
-            // lblBaseUrl
+            // lblStreamServer
             // 
-            this.lblBaseUrl.AutoSize = true;
-            this.lblBaseUrl.Location = new System.Drawing.Point(9, 38);
-            this.lblBaseUrl.Name = "lblBaseUrl";
-            this.lblBaseUrl.Size = new System.Drawing.Size(92, 13);
-            this.lblBaseUrl.TabIndex = 3;
-            this.lblBaseUrl.Text = "Stream Base URL";
+            this.lblStreamServer.AutoSize = true;
+            this.lblStreamServer.Location = new System.Drawing.Point(9, 38);
+            this.lblStreamServer.Name = "lblStreamServer";
+            this.lblStreamServer.Size = new System.Drawing.Size(74, 13);
+            this.lblStreamServer.TabIndex = 3;
+            this.lblStreamServer.Text = "Stream Server";
             // 
             // txtMyStream
             // 
@@ -152,8 +152,8 @@
             this.Controls.Add(this.lblStreams);
             this.Controls.Add(this.txtMyStream);
             this.Controls.Add(this.lblMyStream);
-            this.Controls.Add(this.txtBaseUrl);
-            this.Controls.Add(this.lblBaseUrl);
+            this.Controls.Add(this.txtStreamServer);
+            this.Controls.Add(this.lblStreamServer);
             this.Controls.Add(this.txtStatsURL);
             this.Controls.Add(this.lblStatUrl);
             this.Controls.Add(this.btnOpenStreams);
@@ -170,8 +170,8 @@
         private System.Windows.Forms.Button btnOpenStreams;
         private System.Windows.Forms.Label lblStatUrl;
         private System.Windows.Forms.TextBox txtStatsURL;
-        private System.Windows.Forms.TextBox txtBaseUrl;
-        private System.Windows.Forms.Label lblBaseUrl;
+        private System.Windows.Forms.TextBox txtStreamServer;
+        private System.Windows.Forms.Label lblStreamServer;
         private System.Windows.Forms.TextBox txtMyStream;
         private System.Windows.Forms.Label lblMyStream;
         private System.Windows.Forms.Label lblStreams;

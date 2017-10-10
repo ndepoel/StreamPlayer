@@ -25,7 +25,7 @@ namespace StreamPlayer
             _liveStreamController.StreamsChanged += OnStreamsChanged;
 
             txtStatsURL.Text = StreamConfig.Instance.StatUrl;
-            txtBaseUrl.Text = StreamConfig.Instance.StreamBaseUrl;
+            txtStreamServer.Text = StreamConfig.Instance.StreamServer;
             txtMyStream.Text = StreamConfig.Instance.MyStream;
             chkBorderless.Checked = StreamConfig.Instance.UseBorderless;
             chkBuffering.Checked = StreamConfig.Instance.UseBuffering;
@@ -69,9 +69,9 @@ namespace StreamPlayer
             StreamConfig.Instance.StatUrl = txtStatsURL.Text;
         }
 
-        private void txtBaseUrl_TextChanged(object sender, EventArgs e)
+        private void txtStreamServer_TextChanged(object sender, EventArgs e)
         {
-            StreamConfig.Instance.StreamBaseUrl = txtBaseUrl.Text;
+            StreamConfig.Instance.StreamServer = txtStreamServer.Text;
         }
 
         private void txtMyStream_TextChanged(object sender, EventArgs e)

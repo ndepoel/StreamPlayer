@@ -21,7 +21,7 @@ namespace StreamPlayer
 
         public string FullName => string.Format("{0}/{1}", AppName, StreamName);
 
-        public string StreamUrl => string.Format("{0}/{1}/{2}", StreamConfig.Instance.StreamBaseUrl, AppName, StreamName);
+        public string StreamUrl => string.Format("rtmp://{0}/{1}/{2}", StreamConfig.Instance.StreamServer, AppName, StreamName);
 
         public event Action<LiveStream> Closed;
 
