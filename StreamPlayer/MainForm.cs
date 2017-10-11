@@ -122,7 +122,15 @@ namespace StreamPlayer
         {
             _liveStreamController.CloseLiveStreams();
 
-            StreamConfig.Instance.Save();
+            try
+            {
+                StreamConfig.Instance.Save();
+            }
+            catch
+            {
+                string text = string.Format("Could not save configuration to directory:\n" + Environment.CurrentDirectory + "\nPlease ensure that this application can write to the directory.");
+                MessageBox.Show(text, "Save configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void txtStatsURL_TextChanged(object sender, EventArgs e)
