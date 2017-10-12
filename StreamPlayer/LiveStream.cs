@@ -75,8 +75,8 @@ namespace StreamPlayer
             var args = new List<string>();
 
             // Disable buffering for minimal latency
-            if (StreamConfig.Instance.UseBuffering)
-                args.AddRange(new[] { "-fflags", "-nobuffer" });
+            if (!StreamConfig.Instance.UseBuffering)
+                args.AddRange(new[] { "-fflags", "nobuffer" });
 
             // RTMP stream input
             args.AddRange(new[] { "-i", StreamUrl });
