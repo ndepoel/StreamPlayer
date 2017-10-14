@@ -174,23 +174,15 @@ def main(serverhost, username, password, mediapath, output_dir):
     
     # Get a list of FLV movie files from the media folder on the remote host
     remote_files = myssh.listdir(mediapath)
+    print('Found {} file(s) to download in directory {}'.format(len([f for f in remote_files if f.endswith('.flv')]), mediapath))
+    
     for remote_file in remote_files:
         remotepath = mediapath + '/' + remote_file
         (_, ext) = os.path.splitext(remotepath)
         if ext != '.flv':
             continue
             
-        print(remotepath)
-        
-        # Calculate the remote file's MD5 sum so we can verify the locally downloaded version later
-        remote_md5sum = None
-        for line in myssh.execute('md5sum ' + remotepath):
-            match = re.match(r'(\w+)\s', line)
-            if match:
-                remote_md5sum = match.group(1)
-                break
-        
-        print('MD5: ' + remote_md5sum)
+        print("\nFile: " + remotepath)
         
         # Retrieve the remote file's creation time with nanosecond precision from the server
         crtime = None
@@ -204,11 +196,35 @@ def main(serverhost, username, password, mediapath, output_dir):
                 crtime = crtime.replace(microsecond = nanosecs / 1000)
                 break
                 
-        print('File creation time: ' + str(crtime))
+        if not crtime:
+            print('Failed to retrieve file creation time!')
+            continue
+                
+        print('Creation time: ' + str(crtime))
 
         # Determine the local filename for this file, which includes milliseconds in the timestamp
         (filename, ext) = os.path.splitext(remote_file)
-        local_filename = os.path.join(output_dir, filename + '-{:03}'.format(crtime.microsecond / 1000) + ext)
+        match = re.search(r'(\w+)-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})', filename)
+        if not match:
+            print('Filename does not match the expected pattern!')
+            continue
+            
+        local_filename = os.path.join(output_dir, match.group(1) + '-{}-{:03}'.format(crtime.strftime('%Y%m%d-%H%M%S'), crtime.microsecond / 1000) + ext)
+        
+        # Calculate the remote file's MD5 sum so we can verify the locally downloaded version later
+        remote_md5sum = None
+        print('Calculating MD5... ', end='')
+        for line in myssh.execute('md5sum ' + remotepath):
+            match = re.match(r'(\w+)\s', line)
+            if match:
+                remote_md5sum = match.group(1)
+                break
+        
+        if not remote_md5sum:
+            print('Failed to calculate MD5 checksum!')
+            continue
+        
+        print(remote_md5sum)
         
         # Download the file if it doesn't exist locally or is incomplete
         if not os.path.exists(local_filename) or md5sum(local_filename) != remote_md5sum:
@@ -224,8 +240,6 @@ def main(serverhost, username, password, mediapath, output_dir):
         if md5sum(local_filename) == remote_md5sum:
             print('Deleting remote file: {}'.format(remotepath))
             myssh.removefile(remotepath)
-        
-        print('')
 
     myssh.close()
 
