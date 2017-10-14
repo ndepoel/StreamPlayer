@@ -238,13 +238,22 @@ def encode_segment(segment, output_dir, dry_run = False):
         
     print('Encoding video segment: {}'.format(segment.output_filename()))
     
+    # Stream inputs and video filtering
     cmd = [ffmpeg, '-fflags', '+genpts']
     cmd.extend(segment.create_video_inputs())
     cmd.extend(segment.create_video_filter())
-    cmd.extend(['-map', '[v]', '-map', '0:a'])    # Stream mapping
-    cmd.extend(['-c:v', 'h264_nvenc', '-preset', 'hq', '-qp', '25'])#, '-vsync', '0']) # Video encoding settings
+    
+    # Stream mapping: take the filtered video and copy audio from all input sources
+    cmd.extend(['-map', '[v]'])
+    for i in range(len(segment.videos)):
+        cmd.extend(['-map', '{}:a'.format(i)])
+        
+    # Video and audio encoding settings
+    cmd.extend(['-c:v', 'h264_nvenc', '-preset', 'hq', '-qp', '25'])#, '-vsync', '0'])
     #cmd.extend(['-force_key_frames', "expr:gte(t,n_forced*3)", '-forced-idr', '1'])    # Forced keyframe generation
-    cmd.extend(['-c:a', 'aac']) # Audio encoding settings
+    cmd.extend(['-c:a', 'aac'])
+    
+    # Finally, provide the output filename
     cmd.append(os.path.join(output_dir, segment.output_filename()))
     
     print(' '.join(cmd))
