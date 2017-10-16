@@ -241,7 +241,7 @@ def encode_segment(segment, output_dir, dry_run = False):
     print('Encoding video segment: {}'.format(segment.output_filename()))
     
     # Stream inputs and video filtering
-    cmd = [ffmpeg, '-fflags', '+genpts']
+    cmd = [ffmpeg, '-y', '-fflags', '+genpts']
     cmd.extend(segment.create_video_inputs())
     cmd.extend(segment.create_video_filter())
     
