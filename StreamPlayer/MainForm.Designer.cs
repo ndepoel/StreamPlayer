@@ -41,6 +41,8 @@
             this.cmbMyStream = new System.Windows.Forms.ComboBox();
             this.picStatsUrl = new System.Windows.Forms.PictureBox();
             this.picStreamServer = new System.Windows.Forms.PictureBox();
+            this.cmbApplication = new System.Windows.Forms.ComboBox();
+            this.lblApplication = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picStatsUrl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picStreamServer)).BeginInit();
             this.SuspendLayout();
@@ -94,16 +96,16 @@
             // lblMyStream
             // 
             this.lblMyStream.AutoSize = true;
-            this.lblMyStream.Location = new System.Drawing.Point(9, 64);
+            this.lblMyStream.Location = new System.Drawing.Point(9, 91);
             this.lblMyStream.Name = "lblMyStream";
             this.lblMyStream.Size = new System.Drawing.Size(88, 13);
-            this.lblMyStream.TabIndex = 5;
+            this.lblMyStream.TabIndex = 7;
             this.lblMyStream.Text = "My Stream Name";
             // 
             // lblStreams
             // 
             this.lblStreams.AutoSize = true;
-            this.lblStreams.Location = new System.Drawing.Point(12, 145);
+            this.lblStreams.Location = new System.Drawing.Point(12, 168);
             this.lblStreams.Name = "lblStreams";
             this.lblStreams.Size = new System.Drawing.Size(78, 13);
             this.lblStreams.TabIndex = 8;
@@ -112,15 +114,15 @@
             // lstStreams
             // 
             this.lstStreams.FormattingEnabled = true;
-            this.lstStreams.Location = new System.Drawing.Point(12, 158);
+            this.lstStreams.Location = new System.Drawing.Point(12, 184);
             this.lstStreams.Name = "lstStreams";
-            this.lstStreams.Size = new System.Drawing.Size(448, 134);
-            this.lstStreams.TabIndex = 9;
+            this.lstStreams.Size = new System.Drawing.Size(448, 108);
+            this.lstStreams.TabIndex = 20;
             // 
             // chkBuffering
             // 
             this.chkBuffering.AutoSize = true;
-            this.chkBuffering.Location = new System.Drawing.Point(12, 111);
+            this.chkBuffering.Location = new System.Drawing.Point(12, 138);
             this.chkBuffering.Name = "chkBuffering";
             this.chkBuffering.Size = new System.Drawing.Size(140, 17);
             this.chkBuffering.TabIndex = 13;
@@ -131,7 +133,7 @@
             // chkBorderless
             // 
             this.chkBorderless.AutoSize = true;
-            this.chkBorderless.Location = new System.Drawing.Point(12, 87);
+            this.chkBorderless.Location = new System.Drawing.Point(12, 115);
             this.chkBorderless.Name = "chkBorderless";
             this.chkBorderless.Size = new System.Drawing.Size(175, 17);
             this.chkBorderless.TabIndex = 12;
@@ -142,10 +144,10 @@
             // cmbMyStream
             // 
             this.cmbMyStream.FormattingEnabled = true;
-            this.cmbMyStream.Location = new System.Drawing.Point(107, 61);
+            this.cmbMyStream.Location = new System.Drawing.Point(107, 88);
             this.cmbMyStream.Name = "cmbMyStream";
             this.cmbMyStream.Size = new System.Drawing.Size(353, 21);
-            this.cmbMyStream.TabIndex = 14;
+            this.cmbMyStream.TabIndex = 8;
             this.cmbMyStream.TextChanged += new System.EventHandler(this.cmbMyStream_TextChanged);
             // 
             // picStatsUrl
@@ -170,11 +172,31 @@
             this.picStreamServer.TabStop = false;
             this.picStreamServer.Visible = false;
             // 
+            // cmbApplication
+            // 
+            this.cmbApplication.FormattingEnabled = true;
+            this.cmbApplication.Location = new System.Drawing.Point(107, 61);
+            this.cmbApplication.Name = "cmbApplication";
+            this.cmbApplication.Size = new System.Drawing.Size(353, 21);
+            this.cmbApplication.TabIndex = 6;
+            this.cmbApplication.TextChanged += new System.EventHandler(this.cmbApplication_TextChanged);
+            // 
+            // lblApplication
+            // 
+            this.lblApplication.AutoSize = true;
+            this.lblApplication.Location = new System.Drawing.Point(9, 64);
+            this.lblApplication.Name = "lblApplication";
+            this.lblApplication.Size = new System.Drawing.Size(90, 13);
+            this.lblApplication.TabIndex = 5;
+            this.lblApplication.Text = "Application Name";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 338);
+            this.Controls.Add(this.cmbApplication);
+            this.Controls.Add(this.lblApplication);
             this.Controls.Add(this.picStreamServer);
             this.Controls.Add(this.picStatsUrl);
             this.Controls.Add(this.cmbMyStream);
@@ -213,6 +235,8 @@
         private System.Windows.Forms.ComboBox cmbMyStream;
         private System.Windows.Forms.PictureBox picStatsUrl;
         private System.Windows.Forms.PictureBox picStreamServer;
+        private System.Windows.Forms.ComboBox cmbApplication;
+        private System.Windows.Forms.Label lblApplication;
     }
 }
 

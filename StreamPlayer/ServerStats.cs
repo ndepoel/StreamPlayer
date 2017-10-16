@@ -26,7 +26,7 @@ namespace StreamPlayer
     public class ServerData
     {
         [XmlElement("application")]
-        public ApplicationData Application { get; set; }
+        public List<ApplicationData> Application { get; set; }
     }
 
     public class ApplicationData

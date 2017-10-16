@@ -29,6 +29,7 @@ namespace StreamPlayer
 
             txtStatsURL.Text = StreamConfig.Instance.StatUrl;
             txtStreamServer.Text = StreamConfig.Instance.StreamServer;
+            cmbApplication.Text = StreamConfig.Instance.Application;
             cmbMyStream.Text = StreamConfig.Instance.MyStream;
             chkBorderless.Checked = StreamConfig.Instance.UseBorderless;
             chkBuffering.Checked = StreamConfig.Instance.UseBuffering;
@@ -45,17 +46,26 @@ namespace StreamPlayer
                 return;
             }
 
+            // Check if live stream stats can be requested and parsed from the server
             var stats = await _liveStreamController.RequestServerStats();
-            var streams = stats?.Server?.Application?.LiveStreams;
-            if (streams == null)
+            var applications = stats?.Server?.Application;
+            if (applications == null)
             {
                 picStatsUrl.Image = Resources.Failure;
                 picStatsUrl.Visible = true;
                 return;
             }
             
+            // Fill in the list of application names
+            cmbApplication.Items.Clear();
+            foreach (var app in applications)
+            {
+                cmbApplication.Items.Add(app.Name);
+            }
+
+            // Fill in the list of stream names
             cmbMyStream.Items.Clear();
-            foreach (var stream in streams)
+            foreach (var stream in applications.SelectMany(app => app.LiveStreams).OrderBy(n => n))
             {
                 cmbMyStream.Items.Add(stream.Name);
             }
@@ -141,6 +151,11 @@ namespace StreamPlayer
         private void txtStreamServer_TextChanged(object sender, EventArgs e)
         {
             StreamConfig.Instance.StreamServer = txtStreamServer.Text;
+        }
+
+        private void cmbApplication_TextChanged(object sender, EventArgs e)
+        {
+            StreamConfig.Instance.Application = cmbApplication.Text;
         }
 
         private void cmbMyStream_TextChanged(object sender, EventArgs e)

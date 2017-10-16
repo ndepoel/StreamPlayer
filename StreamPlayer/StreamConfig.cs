@@ -51,6 +51,8 @@ namespace StreamPlayer
 
         public string StreamServer { get; set; } = "foo.bar.com";
 
+        public string Application { get; set; } = "live";
+
         public string MyStream { get; set; } = "";
 
         public bool UseBorderless { get; set; } = false;

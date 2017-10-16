@@ -72,7 +72,7 @@ namespace StreamPlayer
         private async void UpdateLiveStreams()
         {
             var stats = await RequestServerStats();
-            var application = stats?.Server?.Application;
+            var application = stats?.Server?.Application?.FirstOrDefault(app => app.Name == StreamConfig.Instance.Application);
             if (application == null)
                 return;
             
