@@ -12,6 +12,7 @@ default_timezone = pytz.timezone('Europe/Amsterdam')
 ffprobe = 'ffmpeg/bin/ffprobe'
 ffmpeg = 'ffmpeg/bin/ffmpeg'
 font_file = 'FreeSerif.ttf'
+vcodec = 'h264_nvenc'
 
 argparser = argparse.ArgumentParser(description='Tool to process recorded video streams and combine multiple parallel streams into a single video.')
 argparser.add_argument('-t', '--timezone', default='Europe/Amsterdam', help='Time zone to process timestamps with.')
@@ -19,6 +20,7 @@ argparser.add_argument('--ffprobe', default='ffmpeg/bin/ffprobe', help='Path to 
 argparser.add_argument('--ffmpeg', default='ffmpeg/bin/ffmpeg', help='Path to ffmpeg executable.')
 argparser.add_argument('-f', '--font_file', default='FreeSerif.ttf', help='Font file to use for text overlays.')
 argparser.add_argument('-s', '--preferred_stream', default='', help='Name of the stream to give precedence, i.e. that will be placed first and used for sourcing the audio stream if possible.')
+argparser.add_argument('-vc', '--video_codec', default='h264_nvenc', help='Codec to use for video encoding.')
 argparser.add_argument('-i', '--input_dir', help='Directory to look for input stream video files.', required=True)
 argparser.add_argument('-o', '--output_dir', help='Directory to place output video files.', required=True)
 argparser.add_argument('--dry-run', action='store_true', help='Whether or not to do a dry run. Dry runs do not actually perform any video encoding.')
@@ -249,7 +251,7 @@ def encode_segment(segment, output_dir, dry_run = False):
         cmd.extend(['-map', '{}:a'.format(i)])
         
     # Video and audio encoding settings
-    cmd.extend(['-c:v', 'h264_nvenc', '-preset', 'hq', '-qp', '25'])#, '-vsync', '0'])
+    cmd.extend(['-c:v', vcodec, '-preset', 'hq', '-qp', '25'])#, '-vsync', '0'])
     #cmd.extend(['-force_key_frames', "expr:gte(t,n_forced*3)", '-forced-idr', '1'])    # Forced keyframe generation
     cmd.extend(['-c:a', 'aac'])
     
@@ -287,6 +289,7 @@ if __name__ == '__main__':
     ffprobe = args.ffprobe
     ffmpeg = args.ffmpeg
     font_file = args.font_file
+    vcodec = args.video_codec
     
     res = main(args.input_dir, args.output_dir, args.preferred_stream, args.dry_run)
     sys.exit(res)
