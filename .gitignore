@@ -264,3 +264,5 @@ scripts/Lib/
 scripts/Scripts/
 scripts/tcl/
 scripts/pip-selfcheck.json
+*.mkv
+*.flv
