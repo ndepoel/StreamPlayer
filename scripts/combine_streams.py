@@ -77,7 +77,8 @@ class VideoDescriptor(object):
         if scale:
             filters.append('scale={}:{}'.format(*scale))
             
-        filters.append(self._create_text_overlay())
+        if font_file:
+            filters.append(self._create_text_overlay())
         
         if pad:
             filters.append('pad={}:{}:{}:{}'.format(*pad))
