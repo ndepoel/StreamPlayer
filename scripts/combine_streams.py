@@ -251,7 +251,7 @@ def encode_segment(segment, output_dir, dry_run = False):
         cmd.extend(['-map', '{}:a'.format(i)])
         
     # Video and audio encoding settings
-    cmd.extend(['-c:v', vcodec, '-preset', 'hq', '-qp', '25'])#, '-vsync', '0'])
+    cmd.extend(['-c:v', vcodec, '-qp', '25'])#, '-vsync', '0'])
     #cmd.extend(['-force_key_frames', "expr:gte(t,n_forced*3)", '-forced-idr', '1'])    # Forced keyframe generation
     cmd.extend(['-c:a', 'aac'])
     
