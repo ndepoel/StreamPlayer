@@ -139,7 +139,7 @@ def print_progress(count, total):
     if mbs > prev_mbs:
         total_mbs = total / 1048576
         progress = round(float(count * 100) / total)
-        print("{} of {} MB ({}%)\r".format(mbs, total_mbs, int(progress)), end='')
+        print("\r{} of {} MB ({}%)".format(mbs, total_mbs, int(progress)), end='')
         prev_mbs = mbs
         
 def main(serverhost, username, password, mediapath, output_dir):
@@ -230,6 +230,7 @@ def main(serverhost, username, password, mediapath, output_dir):
         if not os.path.exists(local_filename) or md5sum(local_filename) != remote_md5sum:
             print('Downloading {} to local file: {}'.format(remote_file, local_filename))
             myssh.get(remotepath, local_filename, print_progress)
+            print('')
         
         # If the file was already previously downloaded by its original name, rename it
         if os.path.exists(remote_file):
