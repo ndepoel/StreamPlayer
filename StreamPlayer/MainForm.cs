@@ -65,7 +65,7 @@ namespace StreamPlayer
 
             // Fill in the list of stream names
             cmbMyStream.Items.Clear();
-            foreach (var stream in applications.SelectMany(app => app.LiveStreams).OrderBy(n => n))
+            foreach (var stream in applications.SelectMany(app => app.LiveStreams).OrderBy(n => n.Name))
             {
                 cmbMyStream.Items.Add(stream.Name);
             }
