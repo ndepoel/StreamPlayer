@@ -252,7 +252,7 @@ def encode_segment(segment, output_dir, dry_run = False):
         cmd.extend(['-map', '{}:a'.format(i)])
         
     # Video and audio encoding settings
-    cmd.extend(['-c:v', vcodec, '-qp', '25', '-r', '60'])#, '-vsync', '0'])
+    cmd.extend(['-c:v', vcodec, '-qp', '25', '-r', '60'])#, '-vsync', '0']) # Note: qp 22 produces about the same filesizes as OBS's High Quality preset (higher qp equals lower quality)
     #cmd.extend(['-force_key_frames', "expr:gte(t,n_forced*3)", '-forced-idr', '1'])    # Forced keyframe generation
     cmd.extend(['-c:a', 'aac'])
     
