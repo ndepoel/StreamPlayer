@@ -7,7 +7,7 @@ These instructions assume we're running on Windows. The Python scripts will work
     * Ensure PIP is installed, if not run: `easy_install pip`
     * Ensure VirtualEnv is installed, if not run: `pip install virtualenv`
   * Create a virtual environment for the Scripts directory:
-    * Open a command line and change to the Scripts directory: `cd [path]\Scripts`
+    * Open a command line and change to the Scripts directory: `cd [checkout path]\scripts`
     * Run: `[python path]\Scripts\virtualenv.exe .`
     * Activate the virtual environment using: `Scripts\activate.bat`
   * Install the dependencies using PIP:
@@ -22,7 +22,7 @@ Usage
 
 To download the streams off of a Linux-based server over SSH:
 
-  * Run: `python download_streams.py -s [hostname] -u [username] -m [remote media path] -o [local output dir]`
+  * Run: `python download_streams.py -s [hostname] -u [username] -m [remote media path] -o [local download dir]`
     * This will prompt for a password to login to the SSH server
     * To make the process non-interactive, you can add the password to the above command: `-p [password]`
 
@@ -31,9 +31,9 @@ compare the MD5 checksums of the locally downloaded files with the remote files,
 
 To combine the downloaded videos into a series of split-screen collages:
 
-  * Run: `python combine_streams.py -i [input video dir] -o [output dir] --ffprobe [path to ffprobe.exe] --ffmpeg [path to ffmpeg.exe] -f FreeSerif.ttf`
+  * Run: `python combine_streams.py -i [local download dir] -o [output dir] --ffprobe [path to ffprobe.exe] --ffmpeg [path to ffmpeg.exe] -f FreeSerif.ttf`
     * The script needs to know the location of ffprobe and ffmpeg to function. By default it assumes both files are available in directory: `ffmpeg\bin`
-	* By default the videos are combined in arbitrary order and the audio track will be copied from the first video file encountered.
+	* By default the videos are combined in arbitrary order and the audio tracks will be copied in the same order.
 	  To specify a specific participant to give precedence (i.e. always placed first and leading for audio), add the argument: `-s [participant name]`
 	* To check what the script will do without actually doing the video encode, you can perform a dry run first by adding the argument: `--dry-run`
 	
