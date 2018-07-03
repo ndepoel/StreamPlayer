@@ -90,11 +90,11 @@ class VideoDescriptor(object):
             'fontfile': "'{}'".format(font_file),
             'text': "'{}'".format(self.stream_name),
             'fontcolor': 'white',
-            'fontsize': 96,
+            'fontsize': 80,
             'box': 1,
             'boxcolor': 'black@0.5',
             'boxborderw': 5,
-            'x': 5,
+            'x': '(w-text_w-5)',
             'y': '(h-text_h-5)',
         }
         
