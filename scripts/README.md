@@ -35,8 +35,9 @@ To combine the downloaded videos into a series of split-screen collages:
     * The script needs to know the location of ffprobe and ffmpeg to function. By default it assumes both files are available in directory: `ffmpeg\bin`
 	* By default the videos are combined in arbitrary order and the audio tracks will be copied in the same order.
 	  To specify a specific participant to give precedence (i.e. always placed first and leading for audio), add the argument: `-s [participant name]`
+    * To skip encoding of video segments containing only a single stream, you can add the argument: `--skip-single`
 	* To check what the script will do without actually doing the video encode, you can perform a dry run first by adding the argument: `--dry-run`
 	
-The videos are synchronized based on the timestamps in the filenames, so it is important that the files are not renamed before combining. Videos shorter than 120 seconds are ignored.
+The videos are synchronized based on the timestamps in the filenames, so it is important that the files are not renamed before combining. Video segments shorter than 120 seconds are skipped.
 The output videos are split up in segments based on the number of participants. If a participant enters or leaves, this results in a new video segment with the correct number of input videos combined.
 Use the dry run feature to check ahead of time which input videos are detected, and how they will be split up into segments.

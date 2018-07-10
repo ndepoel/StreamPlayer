@@ -24,6 +24,7 @@ argparser.add_argument('-vc', '--video_codec', default=vcodec, help='Codec to us
 argparser.add_argument('-i', '--input_dir', help='Directory to look for input stream video files.', required=True)
 argparser.add_argument('-o', '--output_dir', help='Directory to place output video files.', required=True)
 argparser.add_argument('--dry-run', action='store_true', help='Whether or not to do a dry run. Dry runs do not actually perform any video encoding.')
+argparser.add_argument('--skip-single', action='store_true', help='Skip video segments containing only a single video.')
 
 def format_timedelta(td):
     secs = td.total_seconds()
@@ -264,7 +265,7 @@ def encode_segment(segment, output_dir, dry_run = False):
     if not dry_run:
         subprocess.check_call(cmd)
     
-def main(input_dir, output_dir, preferred_stream = '', dry_run = False):
+def main(input_dir, output_dir, preferred_stream = '', dry_run = False, skip_single = False):
     vids = collect_videos(input_dir)
     for vid in vids:
         print('{}: {} to {} (duration: {})'.format(vid.stream_name, vid.start_time, vid.end_time, vid.duration))
@@ -277,8 +278,9 @@ def main(input_dir, output_dir, preferred_stream = '', dry_run = False):
         print(str(seg))
         
     for seg in segments:
-        encode_segment(seg, output_dir, dry_run)
-        print('')
+        if not skip_single or len(seg.videos) > 1:
+            encode_segment(seg, output_dir, dry_run)
+            print('')
         
     return 0
 
@@ -292,5 +294,5 @@ if __name__ == '__main__':
     font_file = args.font_file
     vcodec = args.video_codec
     
-    res = main(args.input_dir, args.output_dir, args.preferred_stream, args.dry_run)
+    res = main(args.input_dir, args.output_dir, args.preferred_stream, args.dry_run, args.skip_single)
     sys.exit(res)
