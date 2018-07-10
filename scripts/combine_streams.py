@@ -11,7 +11,7 @@ import math
 default_timezone = pytz.timezone('Europe/Amsterdam')
 ffprobe = 'ffmpeg/bin/ffprobe'
 ffmpeg = 'ffmpeg/bin/ffmpeg'
-font_file = 'FreeSerif.ttf'
+font_file = 'Helvetica.ttf'
 vcodec = 'hevc_nvenc'
 
 argparser = argparse.ArgumentParser(description='Tool to process recorded video streams and combine multiple parallel streams into a single video.')
