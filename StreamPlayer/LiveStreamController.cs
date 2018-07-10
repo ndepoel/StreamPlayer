@@ -64,8 +64,8 @@ namespace StreamPlayer
             File.WriteAllBytes(ffplayPath, Resources.ffplay);
             StreamConfig.Instance.FFPlay = ffplayPath;
 
-            string fontPath = Path.Combine(Path.GetTempPath(), "FreeSerif.ttf");
-            File.WriteAllBytes(fontPath, Resources.FreeSerif);
+            string fontPath = Path.Combine(Path.GetTempPath(), "Helvetica.ttf");
+            File.WriteAllBytes(fontPath, Resources.Helvetica);
             StreamConfig.Instance.FontFile = fontPath;
         }
 

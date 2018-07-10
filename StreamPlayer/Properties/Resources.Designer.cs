@@ -83,9 +83,9 @@ namespace StreamPlayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] FreeSerif {
+        internal static byte[] Helvetica {
             get {
-                object obj = ResourceManager.GetObject("FreeSerif", resourceCulture);
+                object obj = ResourceManager.GetObject("Helvetica", resourceCulture);
                 return ((byte[])(obj));
             }
         }

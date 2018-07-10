@@ -15,7 +15,7 @@ namespace StreamPlayer
         public string FFPlay { get; set; } = "ffplay.exe";
 
         [XmlIgnore]
-        public string FontFile { get; set; } = "FreeSerif.ttf";
+        public string FontFile { get; set; } = "Helvetica.ttf";
 
         public string StatUrl { get; set; } = "http://foo.bar.com:8080/stat";
 
