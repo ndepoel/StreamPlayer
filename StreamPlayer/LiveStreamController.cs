@@ -94,7 +94,7 @@ namespace StreamPlayer
             foreach (var liveStream in liveStreams)
             {
                 var streamData = streamDatas.FirstOrDefault(sd => sd.Name == liveStream.StreamName);
-                if (liveStream.AppName != application.Name || streamData == null)
+                if (liveStream.AppName != application.Name || streamData == null || streamData.Meta == null)
                 {
                     liveStream.Close();
                     StreamsChanged?.Invoke();
