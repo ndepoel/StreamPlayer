@@ -1,0 +1,68 @@
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server {
+        listen       8088;
+        server_name  localhost;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        # This URL provides RTMP statistics in XML
+        location /stat {
+            rtmp_stat all;
+
+            # Use this stylesheet to view XML as web page
+            # in browser
+            rtmp_stat_stylesheet stat.xsl;
+        }
+
+        location /stat.xsl {
+            # XML stylesheet to view RTMP stats.
+            # Copy stat.xsl wherever you want
+            # and put the full directory path here
+            root /var/media/;
+        }
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}
+
+rtmp {
+        server {
+                listen 1935;
+                chunk_size 4096;
+
+                application live {
+                        live on;
+
+                        record all;
+                        record_path /var/media;
+                        record_unique off;
+                        record_suffix -%Y%m%d-%H%M%S.flv;
+
+                        push rtmp://live-ams.twitch.tv/app/[stream_key] name=alice live=1;
+                        push rtmp://a.rtmp.youtube.com/live2/[stream_key] name=bob live=1;
+
+                        wait_key on;
+                        wait_video on;
+                }
+        }
+}
