@@ -124,9 +124,9 @@ namespace StreamPlayer
             sb.AppendFormat("fontfile='{0}':", StreamConfig.Instance.FontFile.Replace("\\", "\\\\").Replace(":", "\\:"));
             sb.AppendFormat("text='{0}':", StreamName);
             sb.Append("fontcolor=white:");
-            sb.Append("fontsize=96:");
+            sb.Append("fontsize=80:");
             sb.Append("box=1:boxcolor=black@0.5:boxborderw=5:");
-            sb.Append("x=5:y=(h-text_h-5)");
+            sb.Append("x=(w-text_w-5):y=(h-text_h-5)");
             sb.Append("\"");
             return sb.ToString();
         }
@@ -201,8 +201,9 @@ namespace StreamPlayer
                 int halfWidth = workingArea.Width / 2;
                 int halfHeight = workingArea.Height / 2;
                 uint slotBits = ScreenSlot % 4;
-                int x = ((slotBits & 0x01) == 0) ? workingArea.Left : workingArea.Right - halfWidth;
-                int y = ((slotBits & 0x02) == 0) ? workingArea.Top : workingArea.Bottom - halfHeight;
+                int leftRightBit = workingArea.X < 0 ? 1 : 0;   // Organize windows from right-to-left if the second screen is on the left
+                int x = ((slotBits & 0x02) == leftRightBit) ? workingArea.Left : workingArea.Right - halfWidth;
+                int y = ((slotBits & 0x01) == 0) ? workingArea.Top : workingArea.Bottom - halfHeight;
 
                 MoveWindow(_process.MainWindowHandle, x, y, halfWidth, halfHeight, true);
             }
