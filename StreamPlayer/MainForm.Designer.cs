@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnOpenStreams = new System.Windows.Forms.Button();
             this.lblStatUrl = new System.Windows.Forms.Label();
             this.txtStatsURL = new System.Windows.Forms.TextBox();
@@ -210,6 +211,7 @@
             this.Controls.Add(this.txtStatsURL);
             this.Controls.Add(this.lblStatUrl);
             this.Controls.Add(this.btnOpenStreams);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Stream Player";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
