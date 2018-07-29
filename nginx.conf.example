@@ -60,6 +60,7 @@ rtmp {
 
                         push rtmp://live-ams.twitch.tv/app/[stream_key] name=alice live=1;
                         push rtmp://a.rtmp.youtube.com/live2/[stream_key] name=bob live=1;
+                        push rtmp://ingest-ams.mixer.com:1935/beam/[stream_key] name=eve live=1;
 
                         wait_key on;
                         wait_video on;
